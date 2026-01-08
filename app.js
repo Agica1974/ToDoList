@@ -76,6 +76,13 @@ function addTodo() {
   input.value = "";
 }
 
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    addTodo();
+  }
+});
+
+
 // --- Event Listener ---
 addBtn.addEventListener("click", addTodo);
 
