@@ -14,7 +14,7 @@
         .auth-wrapper {
         display: flex;
         flex-direction: column; /* stapelt Buttons über Info */
-        align-items: flex-start; /* optional: alles linksbündig */
+        align-items: center; /* optional: alles linksbündig */
         gap: 5px; /* Abstand zwischen Buttons und Info */
         margin-bottom: 15px; /* Abstand zur To-Do-Liste */
         }
