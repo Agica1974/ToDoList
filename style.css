@@ -10,12 +10,19 @@
 
         /*xxxxxxxxxxxxxxxxxx Authentication xxxxxxxxxxxxxxxxxxx */
 
-        /* Container für die Auth Buttons */
+        /* Wrapper für Auth + UserInfo */
+        .auth-wrapper {
+        display: flex;
+        flex-direction: column; /* stapelt Buttons über Info */
+        align-items: flex-start; /* optional: alles linksbündig */
+        gap: 5px; /* Abstand zwischen Buttons und Info */
+        margin-bottom: 15px; /* Abstand zur To-Do-Liste */
+        }
+
+        /* Container für die Buttons */
         #auth {
         display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 15px;
+        gap: 10px; /* Abstand zwischen Login/Logout Button */
         }
 
         /* Buttons allgemein */
@@ -52,8 +59,8 @@
         #userInfo {
         font-weight: bold;
         color: #333;
-        margin-left: 10px;
         }
+
 
 
         .todo-container {

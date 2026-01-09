@@ -7,20 +7,23 @@
 </head>
 <body>
 
+  <div class="todo-container">
+  <h1>To-Do Liste</h1>
+
+  <!-- Wrapper für Auth Buttons + User Info -->
+  <div class="auth-wrapper">
     <div id="auth">
-  <button id="loginBtn">Mit Google anmelden</button>
-  <button id="logoutBtn" style="display:none;">Abmelden</button>
+      <button id="loginBtn">Mit Google anmelden</button>
+      <button id="logoutBtn" style="display:none;">Abmelden</button>
+    </div>
+    <p id="userInfo"></p>
+  </div>
+
+  <input type="text" id="todoInput" placeholder="Neue Aufgabe...">
+  <button id="addBtn">Hinzufügen</button>
+  <ul id="todoList"></ul>
 </div>
 
-<p id="userInfo"></p>
-
-
-<div class="todo-container">
-    <h1>To-Do Liste</h1>
-    <input type="text" id="todoInput" placeholder="Neue Aufgabe...">
-    <button id="addBtn">Hinzufügen</button>
-    <ul id="todoList"></ul>
-</div>
 
 <!-- Modul JS einbinden -->
 <script type="module" src="app.js"></script>
