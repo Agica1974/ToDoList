@@ -8,6 +8,54 @@
             height: 100vh;
         }
 
+        /*xxxxxxxxxxxxxxxxxx Authentication xxxxxxxxxxxxxxxxxxx */
+
+        /* Container für die Auth Buttons */
+        #auth {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        }
+
+        /* Buttons allgemein */
+        #auth button {
+        padding: 6px 14px;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        /* Login Button – Google-typisch */
+        #loginBtn {
+        background-color: #4285F4;
+        color: white;
+        }
+
+        #loginBtn:hover {
+        background-color: #357ae8;
+        }
+
+        /* Logout Button – neutral / rot */
+        #logoutBtn {
+        background-color: #ff4d4d;
+        color: white;
+        }
+
+        #logoutBtn:hover {
+        background-color: #e04343;
+        }
+
+        /* User Info Text */
+        #userInfo {
+        font-weight: bold;
+        color: #333;
+        margin-left: 10px;
+        }
+
+
         .todo-container {
             background: #fff;
             padding: 20px;
