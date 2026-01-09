@@ -81,16 +81,31 @@ function loadTodos() {
 
 
 // --- To-Do Element erstellen ---
+
 function createTodoElement(text, key, done = false) {
   const li = document.createElement("li");
   li.textContent = text;
+
+  // Status übernehmen
   if (done) li.classList.add("done");
 
   // Klick = erledigt / nicht erledigt
   li.addEventListener("click", () => {
     li.classList.toggle("done");
-    const todoRef = ref(db, 'todos/' + key);
-    update(todoRef, { done: li.classList.contains("done") });
+
+    // 🔹 Prüfe, dass currentUserId gesetzt ist
+    if (!currentUserId) {
+      console.error("Kein eingeloggter User – Status wird nicht gespeichert");
+      return;
+    }
+
+    // 🔹 Pfad zum To-Do
+    const todoRef = ref(db, `todos/${currentUserId}/${key}`);
+
+    // 🔹 Status in DB speichern
+    update(todoRef, { done: li.classList.contains("done") })
+      .then(() => console.log(`To-Do "${text}" Status aktualisiert`))
+      .catch(err => console.error("Fehler beim Aktualisieren des Status:", err));
   });
 
   // Löschen
@@ -98,15 +113,19 @@ function createTodoElement(text, key, done = false) {
   delBtn.textContent = "X";
   delBtn.className = "delete";
   delBtn.addEventListener("click", e => {
-    e.stopPropagation(); // verhindert Toggle "done"
-    remove(ref(db, 'todos/' + key));
+    e.stopPropagation();
+    if (!currentUserId) return;
+    remove(ref(db, `todos/${currentUserId}/${key}`));
   });
 
   li.appendChild(delBtn);
   return li;
 }
 
+
+
 // --- To-Do hinzufügen ---
+
 function addTodo() {
   if (!currentUserId) return;
 
@@ -114,10 +133,13 @@ function addTodo() {
   if (!text) return;
 
   const newTodoRef = push(ref(db, `todos/${currentUserId}`));
-  set(newTodoRef, { text, done: false });
+  set(newTodoRef, { text, done: false }) // 🔹 Status standardmäßig false
+    .then(() => console.log(`Neues To-Do "${text}" gespeichert`))
+    .catch(err => console.error("Fehler beim Speichern:", err));
 
   input.value = "";
 }
+
 
 
 // --- Event Listener ---

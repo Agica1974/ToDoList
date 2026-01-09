@@ -103,10 +103,12 @@
             align-items: center;
         }
 
+       
         li.done {
-            text-decoration: line-through;
-            color: gray;
+        text-decoration: line-through;
+        opacity: 0.6;
         }
+
 
         li {
         animation: fadeIn 1.3s ease;
