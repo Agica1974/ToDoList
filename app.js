@@ -1,6 +1,9 @@
 // app.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
 import { getDatabase, ref, push, set, onValue, remove, update } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-database.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
 
 // --- Firebase Konfiguration ---
 const firebaseConfig = {
@@ -17,6 +20,43 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+// --- Firebase Auth initialisieren (hier einfügen!) ---
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const userInfo = document.getElementById("userInfo");
+
+loginBtn.addEventListener("click", () => {
+  signInWithPopup(auth, provider);
+});
+
+logoutBtn.addEventListener("click", () => {
+  signOut(auth);
+});
+
+
+let currentUserId = null;
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    currentUserId = user.uid;
+    userInfo.textContent = `Angemeldet als: ${user.displayName}`;
+    loginBtn.style.display = "none";
+    logoutBtn.style.display = "inline";
+
+    loadTodos(); // 🔥 jetzt erst laden
+  } else {
+    currentUserId = null;
+    userInfo.textContent = "";
+    loginBtn.style.display = "inline";
+    logoutBtn.style.display = "none";
+    todoList.innerHTML = "";
+  }
+});
+
+
 // --- DOM Elemente ---
 const todoList = document.getElementById("todoList");
 const input = document.getElementById("todoInput");
@@ -24,19 +64,21 @@ const addBtn = document.getElementById("addBtn");
 
 // --- To-Do laden ---
 function loadTodos() {
-  const todosRef = ref(db, 'todos');
+  if (!currentUserId) return;
+
+  const todosRef = ref(db, `todos/${currentUserId}`);
   onValue(todosRef, snapshot => {
-    console.log("Firebase Snapshot:", snapshot.val()); // Debug
     todoList.innerHTML = "";
     if (snapshot.exists()) {
-      snapshot.forEach(childSnapshot => {
-        const todo = childSnapshot.val();
-        const li = createTodoElement(todo.text, childSnapshot.key, todo.done);
+      snapshot.forEach(child => {
+        const todo = child.val();
+        const li = createTodoElement(todo.text, child.key, todo.done);
         todoList.appendChild(li);
       });
     }
   });
 }
+
 
 // --- To-Do Element erstellen ---
 function createTodoElement(text, key, done = false) {
@@ -66,21 +108,16 @@ function createTodoElement(text, key, done = false) {
 
 // --- To-Do hinzufügen ---
 function addTodo() {
+  if (!currentUserId) return;
+
   const text = input.value.trim();
   if (!text) return;
 
-  console.log("Neue Aufgabe:", text); // Debug
-  const newTodoRef = push(ref(db, 'todos'));
-  set(newTodoRef, { text: text, done: false });
+  const newTodoRef = push(ref(db, `todos/${currentUserId}`));
+  set(newTodoRef, { text, done: false });
 
   input.value = "";
 }
-
-input.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    addTodo();
-  }
-});
 
 
 // --- Event Listener ---
