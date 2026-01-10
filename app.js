@@ -119,7 +119,7 @@ function createTodoElement(text, key, done = false) {
   });
 
   li.appendChild(delBtn);
-  return li;
+  
 
   const editBtn = document.createElement("button");
   editBtn.textContent = "✏️";
@@ -154,7 +154,7 @@ function createTodoElement(text, key, done = false) {
   });
 
   li.appendChild(editBtn);
-
+  return li;
 
 
 }

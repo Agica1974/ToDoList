@@ -98,6 +98,7 @@
             padding: 8px;
             background: #eee;
             margin-bottom: 5px;
+            margin-left: auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
