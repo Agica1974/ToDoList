@@ -94,10 +94,12 @@
             margin-top: 15px;
         }
 
-        li {
-        display: flex;
-        align-items: center;
-        padding: 8px 10px;
+         li {
+            display: flex;
+            align-items: center; /* vertikal zentriert */
+            justify-content: space-between; /* Text links, Buttons rechts */
+            padding: 8px 10px;
+            border: 1px solid green;
         }
 
 
@@ -122,19 +124,13 @@
             background: red;
             color: white;
             border: none;
-            width: 10%;
-            margin-right: auto;
-            padding: 4px 8px;
-            cursor: pointer;
+           
         }
 
         .edit {
-            margin-left: auto;
             background: none;
             border: none;
-            width: 10%;
-            cursor: pointer;
-            font-size: 16px;
+           
         }
 
         .edit-input {
@@ -144,20 +140,35 @@
         }
 
         .todo-text {
-        flex: 1; /* nimmt den verfügbaren Platz ein */
-        }
+    flex: 1;             /* nimmt den Platz links */
+    display: flex;
+    align-items: center;  /* vertikal zentriert */
+}
 
+
+       
         .actions {
-        display: flex;
-        gap: 8px;
+            display: flex;
+            gap: 8px; /* Abstand zwischen Edit und Delete */
         }
 
-        .actions button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        }
+      .actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+
+    /* Padding einheitlich */
+    padding: 0;   /* 0 = Basis, dann über line-height */
+    margin: 0;    /* keine extra Margins */
+    
+    display: flex;
+    align-items: center;  /* vertikal zentrieren */
+    justify-content: center; /* horizontal zentrieren */
+
+    line-height: 1; /* verhindert, dass Textzeichen verschoben sind */
+}
+
 
 
 
