@@ -84,10 +84,15 @@ function loadTodos() {
 
 function createTodoElement(text, key, done = false) {
   const li = document.createElement("li");
-  li.textContent = text;
+
+  const textSpan = document.createElement("span");
+  textSpan.textContent = text;
+  textSpan.className = "todo-text";
 
   // Status übernehmen
+
   if (done) li.classList.add("done");
+  
 
   // Klick = erledigt / nicht erledigt
   li.addEventListener("click", () => {
@@ -108,23 +113,14 @@ function createTodoElement(text, key, done = false) {
       .catch(err => console.error("Fehler beim Aktualisieren des Status:", err));
   });
 
-  // Löschen
-  const delBtn = document.createElement("button");
-  delBtn.textContent = "X";
-  delBtn.className = "delete";
-  delBtn.addEventListener("click", e => {
-    e.stopPropagation();
-    if (!currentUserId) return;
-    remove(ref(db, `todos/${currentUserId}/${key}`));
-  });
+    const actions = document.createElement("div");
+    actions.className = "actions";
 
-  li.appendChild(delBtn);
-  
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "✏️";
+    editBtn.className = "edit";
 
-  const editBtn = document.createElement("button");
-  editBtn.textContent = "✏️";
-  editBtn.className = "edit";
-  editBtn.addEventListener("click", (e) => {
+    editBtn.addEventListener("click", (e) => {
   e.stopPropagation();
 
   const input = document.createElement("input");
@@ -132,7 +128,7 @@ function createTodoElement(text, key, done = false) {
   input.value = text;
   input.className = "edit-input";
 
-  li.firstChild.replaceWith(input);
+  textSpan.replaceWith(input);
   input.focus();
 
   const saveEdit = () => {
@@ -144,6 +140,19 @@ function createTodoElement(text, key, done = false) {
     });
   };
 
+
+  // Löschen
+  const delBtn = document.createElement("button");
+  delBtn.textContent = "X";
+  delBtn.className = "delete";
+
+  delBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    if (!currentUserId) return;
+    remove(ref(db, `todos/${currentUserId}/${key}`));
+  });
+
+
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       saveEdit();
@@ -153,9 +162,13 @@ function createTodoElement(text, key, done = false) {
   input.addEventListener("blur", saveEdit);
   });
 
-  li.appendChild(editBtn);
-  return li;
+  actions.appendChild(editBtn);
+  actions.appendChild(delBtn);
 
+  li.appendChild(textSpan);
+  li.appendChild(actions);
+
+  return li;
 
 }
 
