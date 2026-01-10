@@ -120,6 +120,43 @@ function createTodoElement(text, key, done = false) {
 
   li.appendChild(delBtn);
   return li;
+
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "✏️";
+  editBtn.className = "edit";
+  editBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.value = text;
+  input.className = "edit-input";
+
+  li.firstChild.replaceWith(input);
+  input.focus();
+
+  const saveEdit = () => {
+    const newText = input.value.trim();
+    if (!newText) return;
+
+    update(ref(db, `todos/${currentUserId}/${key}`), {
+      text: newText
+    });
+  };
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      saveEdit();
+    }
+  });
+
+  input.addEventListener("blur", saveEdit);
+  });
+
+  li.appendChild(editBtn);
+
+
+
 }
 
 
