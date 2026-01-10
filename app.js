@@ -89,77 +89,63 @@ function createTodoElement(text, key, done = false) {
   textSpan.textContent = text;
   textSpan.className = "todo-text";
 
-  // Status übernehmen
-
   if (done) li.classList.add("done");
-  
 
-  // Klick = erledigt / nicht erledigt
   li.addEventListener("click", () => {
     li.classList.toggle("done");
-
-    // 🔹 Prüfe, dass currentUserId gesetzt ist
-    if (!currentUserId) {
-      console.error("Kein eingeloggter User – Status wird nicht gespeichert");
-      return;
-    }
-
-    // 🔹 Pfad zum To-Do
-    const todoRef = ref(db, `todos/${currentUserId}/${key}`);
-
-    // 🔹 Status in DB speichern
-    update(todoRef, { done: li.classList.contains("done") })
-      .then(() => console.log(`To-Do "${text}" Status aktualisiert`))
-      .catch(err => console.error("Fehler beim Aktualisieren des Status:", err));
-  });
-
-    const actions = document.createElement("div");
-    actions.className = "actions";
-
-    const editBtn = document.createElement("button");
-    editBtn.textContent = "✏️";
-    editBtn.className = "edit";
-
-    editBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-
-  const input = document.createElement("input");
-  input.type = "text";
-  input.value = text;
-  input.className = "edit-input";
-
-  textSpan.replaceWith(input);
-  input.focus();
-
-  const saveEdit = () => {
-    const newText = input.value.trim();
-    if (!newText) return;
+    if (!currentUserId) return;
 
     update(ref(db, `todos/${currentUserId}/${key}`), {
-      text: newText
+      done: li.classList.contains("done")
     });
-  };
+  });
 
+  const actions = document.createElement("div");
+  actions.className = "actions";
 
-  // Löschen
+  // ✏️ EDIT
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "✏️";
+  editBtn.className = "edit";
+
+  editBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = textSpan.textContent;
+    input.className = "edit-input";
+
+    textSpan.replaceWith(input);
+    input.focus();
+
+    const saveEdit = () => {
+      const newText = input.value.trim();
+      if (!newText) return;
+
+      update(ref(db, `todos/${currentUserId}/${key}`), {
+        text: newText
+      });
+
+      textSpan.textContent = newText;
+      input.replaceWith(textSpan);
+    };
+
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter") saveEdit();
+    });
+
+    input.addEventListener("blur", saveEdit);
+  });
+
+  // ❌ DELETE (jetzt korrekt außerhalb!)
   const delBtn = document.createElement("button");
-  delBtn.textContent = "X";
+  delBtn.textContent = "❌";
   delBtn.className = "delete";
 
-  delBtn.addEventListener("click", e => {
+  delBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    if (!currentUserId) return;
     remove(ref(db, `todos/${currentUserId}/${key}`));
-  });
-
-
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      saveEdit();
-    }
-  });
-
-  input.addEventListener("blur", saveEdit);
   });
 
   actions.appendChild(editBtn);
@@ -169,7 +155,6 @@ function createTodoElement(text, key, done = false) {
   li.appendChild(actions);
 
   return li;
-
 }
 
 
