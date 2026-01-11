@@ -79,6 +79,9 @@ getRedirectResult(auth).catch(err => console.warn("Redirect Result Fehler:", err
 
 // --- To-Do Element erstellen ---
 function createTodoElement(text, key, done = false) {
+
+  if (!text || text.trim() === "") return null; // ❌ Kein Platzhalter
+
   const li = document.createElement("li");
   const textSpan = document.createElement("span");
   textSpan.textContent = text;
@@ -164,18 +167,17 @@ addBtn.addEventListener("click", addTodo);
 input.addEventListener("keydown", e => { if (e.key === "Enter") addTodo(); });
 
 onValue(ref(db, `todos/${currentUserId}`), (snapshot) => {
-  todoList.innerHTML = ""; // alte Liste löschen
+  todoList.innerHTML = "";
+
   snapshot.forEach(childSnap => {
     const todo = childSnap.val();
     const li = createTodoElement(todo.text, childSnap.key, todo.done);
-    todoList.appendChild(li);
-
-    // Pop-In Animation nur für neue To-Dos
-    if (!todo.done) {
-      li.classList.add("new");
+    if (li) {
+      todoList.appendChild(li);
     }
   });
 });
+
 
 
 
