@@ -108,6 +108,7 @@
         li.done {
         text-decoration: line-through;
         opacity: 0.6;
+        transition: opacity 0.3s ease;
         }
 
 
@@ -115,9 +116,18 @@
         animation: fadeIn 1.3s ease;
         }
 
-        @keyframes fadeIn {
+        /* @keyframes fadeIn {
         from { opacity: 0; transform: translateY(-5px); }
         to { opacity: 1; transform: translateY(0); }
+        } */
+
+        @keyframes popIn {
+        0%   { transform: scale(0.8); opacity: 0; }
+        80%  { transform: scale(1.05); opacity: 1; }
+        100% { transform: scale(1); }
+        }
+        li.new {
+        animation: popIn 0.4s ease;
         }
 
 

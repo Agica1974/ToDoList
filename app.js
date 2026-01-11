@@ -137,6 +137,7 @@ function createTodoElement(text, key, done = false) {
   return li;
 }
 
+
 // --- Neues To-Do hinzufügen ---
 function addTodo() {
   if (!currentUserId) return;
@@ -152,3 +153,12 @@ function addTodo() {
 // --- Event Listener ---
 addBtn.addEventListener("click", addTodo);
 input.addEventListener("keydown", e => { if (e.key === "Enter") addTodo(); });
+
+delBtn.addEventListener("click", e => {
+  e.stopPropagation();
+  li.style.animation = "fadeOut 0.5s forwards";
+  setTimeout(() => {
+    remove(ref(db, `todos/${currentUserId}/${key}`));
+  }, 500);
+});
+
