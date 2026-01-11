@@ -134,6 +134,14 @@ function createTodoElement(text, key, done = false) {
   li.appendChild(textSpan);
   li.appendChild(actions);
 
+  delBtn.addEventListener("click", e => {
+  e.stopPropagation();
+  li.style.animation = "fadeOut 0.5s forwards";
+  setTimeout(() => {
+    remove(ref(db, `todos/${currentUserId}/${key}`));
+  }, 500);
+});
+
   return li;
 }
 
@@ -170,11 +178,5 @@ onValue(ref(db, `todos/${currentUserId}`), (snapshot) => {
 });
 
 
-delBtn.addEventListener("click", e => {
-  e.stopPropagation();
-  li.style.animation = "fadeOut 0.5s forwards";
-  setTimeout(() => {
-    remove(ref(db, `todos/${currentUserId}/${key}`));
-  }, 500);
-});
+
 
