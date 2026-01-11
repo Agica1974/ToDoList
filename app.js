@@ -147,12 +147,28 @@ function addTodo() {
   const newTodoRef = push(ref(db, `todos/${currentUserId}`));
   set(newTodoRef, { text, done: false }).catch(err => console.error(err));
 
+ 
   input.value = "";
 }
 
 // --- Event Listener ---
 addBtn.addEventListener("click", addTodo);
 input.addEventListener("keydown", e => { if (e.key === "Enter") addTodo(); });
+
+onValue(ref(db, `todos/${currentUserId}`), (snapshot) => {
+  todoList.innerHTML = ""; // alte Liste löschen
+  snapshot.forEach(childSnap => {
+    const todo = childSnap.val();
+    const li = createTodoElement(todo.text, childSnap.key, todo.done);
+    todoList.appendChild(li);
+
+    // Pop-In Animation nur für neue To-Dos
+    if (!todo.done) {
+      li.classList.add("new");
+    }
+  });
+});
+
 
 delBtn.addEventListener("click", e => {
   e.stopPropagation();
