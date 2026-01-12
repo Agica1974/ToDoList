@@ -63,13 +63,16 @@
 
 
 
-        .todo-container {
-            background: #fff;
-            padding: 20px;
-            width: 300px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+       .todo-container {
+        background: #fff;
+        padding: 16px;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 12px; /* Abstand zum Rand */
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
+
 
         h1 {
             text-align: center;
@@ -77,13 +80,15 @@
 
         input {
             width: 100%;
-            padding: 8px;
+            padding: 12px;
+            font-size: 16px;
             box-sizing: border-box;
         }
 
         button {
             width: 100%;
-            padding: 8px;
+            padding: 12px;
+            font-size: 16px;
             margin-top: 10px;
             cursor: pointer;
         }
@@ -98,7 +103,7 @@
             display: flex;
             align-items: center; /* vertikal zentriert */
             justify-content: space-between; /* Text links, Buttons rechts */
-            padding: 8px 10px;
+            padding: 12px 10px;
             border: 1px solid green;
             margin-top: 5px;
         }
@@ -173,10 +178,10 @@
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
 
     /* Padding einheitlich */
-    padding: 0;   /* 0 = Basis, dann über line-height */
+    padding: 6px;   /* 0 = Basis, dann über line-height */
     margin: 0;    /* keine extra Margins */
     
     display: flex;
@@ -185,6 +190,15 @@
 
     line-height: 1; /* verhindert, dass Textzeichen verschoben sind */
 }
+
+@media (min-width: 768px) {
+  .todo-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+}
+
 
 
 
