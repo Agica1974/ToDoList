@@ -1,12 +1,22 @@
-
         body {
             font-family: Arial, sans-serif;
             background: #f4f4f4;
+
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+
+            justify-content: flex-start;
             align-items: center;
-            height: 100vh;
-        }
+
+            min-height: 100vh;
+            min-height: 100dvh;
+
+            height: auto;
+
+            margin: 0;
+            padding: 15px 0;
+            box-sizing: border-box;
+            }
 
         /*xxxxxxxxxxxxxxxxxx Authentication xxxxxxxxxxxxxxxxxxx */
 
